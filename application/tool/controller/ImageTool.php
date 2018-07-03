@@ -23,19 +23,19 @@ class ImageTool extends BaseTool
        */
     public function setFileImage($image = 'image', $path = null)
     {
-        // 获取表单上传文件 例如上传了001.jpg
+        // 获取表单上传文件
         $file = request()->file($image);
-        if ($path == null) {
-            $path = config('config.file_image_path');
-        }
-        // 移动到框架应用根目录/public/uploads/ 目录下
         if ($file) {
+            // 移动到框架指定目录
+            if ($path == null) {
+                $path = config('config.file_image_path');
+            }
             $info = $file->move(ROOT_PATH . 'public' . DS . $path);
             if ($info) {
                 // 图片名
                 $SaveName = $info->getSaveName();
                 // 完整图片地址
-                $imageUrl = config('config.root_path') . $path  . $SaveName;
+                $imageUrl = config('config.root_path') . $path . $SaveName;
                 // 图片写入数据库
                 $imageM = new Image();
                 $data = [
@@ -53,12 +53,14 @@ class ImageTool extends BaseTool
             } else {
                 // 上传失败获取错误信息
                 throw new ToolException([
-                    'msg' => '保存文件图片失败',
+                    'msg' => '移动图片到框架指定目录失败',
                     'data' => $file->getError()
                 ]);
             }
         } else {
-            return saReturn(1, 'NO');
+            throw new ToolException([
+                'msg' => '获取表单上传文件失败，建议检测参数名',
+            ]);
         }
     }
 

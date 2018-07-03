@@ -16,22 +16,26 @@ class ImageTool extends BaseTool
 {
 
     /*
-     * 接收普通图片
-     * @image 接收的参数名,默认为iamge
-     * @return 0成功并返回图片ID和Url 1失败
-     */
-    public function setFileImage($image = 'image')
+       * 接收普通图片
+       * @image 接收的参数名,默认为image
+       * @path 图片的保存地址，项目文件夹为根目录，为空时使用config.file_image_path的配置（非必选）
+       * @return 0成功并返回图片ID和Url 1失败
+       */
+    public function setFileImage($image = 'image', $path = null)
     {
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file($image);
+        if ($path == null) {
+            $path = config('config.file_image_path');
+        }
         // 移动到框架应用根目录/public/uploads/ 目录下
         if ($file) {
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'images');
+            $info = $file->move(ROOT_PATH . 'public' . DS . $path);
             if ($info) {
                 // 图片名
                 $SaveName = DS . $info->getSaveName();
                 // 完整图片地址
-                $imageUrl = Config("setting.imagePath") . DS . $info->getSaveName();
+                $imageUrl = config('config.root_path') . $path . DS . $info->getSaveName();
                 // 图片写入数据库
                 $imageM = new Image();
                 $data = [
@@ -61,12 +65,12 @@ class ImageTool extends BaseTool
     /*
      * 处理Base64图片
      * @base64Image 需要处理的Base64图片（必选）
-     * @path 图片的保存地址，public文件夹为根目录，为空时使用config.image_path的配置（非必选）
+     * @path 图片的保存地址，public文件夹为根目录，为空时使用config.base64_image_path的配置（非必选）
      */
     public static function setBase64($base64Image, $path = null)
     {
         if ($path == null) {
-            $path = config('config.image_path');
+            $path = config('config.base64_image_path');
         }
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64Image, $result)) {
             $imageType = $result[2];

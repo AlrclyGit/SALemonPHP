@@ -19,7 +19,7 @@ class ImageTool extends BaseTool
        * 接收普通图片
        * @image 接收的参数名,默认为image
        * @path 图片的保存地址，项目文件夹为根目录，为空时使用config.file_image_path的配置（非必选）
-       * @return 0成功并返回图片ID和Url 1失败
+       * @return 0成功 并返回图片ID和Url 1失败
        */
     public function setFileImage($image = 'image', $path = null)
     {
@@ -33,9 +33,9 @@ class ImageTool extends BaseTool
             $info = $file->move(ROOT_PATH . 'public' . DS . $path);
             if ($info) {
                 // 图片名
-                $SaveName = DS . $info->getSaveName();
+                $SaveName = $info->getSaveName();
                 // 完整图片地址
-                $imageUrl = config('config.root_path') . $path . DS . $info->getSaveName();
+                $imageUrl = config('config.root_path') . $path  . $SaveName;
                 // 图片写入数据库
                 $imageM = new Image();
                 $data = [
@@ -74,7 +74,7 @@ class ImageTool extends BaseTool
         }
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64Image, $result)) {
             $imageType = $result[2];
-            $newFile = $path . DS . date('Ymd', time()) . DS;
+            $newFile = $path . date('Ymd', time()) . DS;
             if (!file_exists($newFile)) {
                 mkdir($newFile, 0777, true);
             }

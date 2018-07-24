@@ -1,0 +1,101 @@
+<!--  -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{$name} 后台管理</title>
+    <link rel="stylesheet" href="{:url('/layui/css/layui.css')}">
+    <style>
+        #side ul {
+            display: none;
+        }
+
+        #side ul.sa-show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+
+    <div class="layui-header">
+
+        <!-- Logo -->
+        <div class="layui-logo">{$name}</div>
+
+        <!-- 水平导航 -->
+        <ul class="layui-nav layui-layout-left" lay-filter="filter">
+            <li class="layui-nav-item layui-this" data-headerId="1"><a>控制台</a></li>
+            <li class="layui-nav-item" data-headerId="2"><a>用户信息</a></li>
+            <li class="layui-nav-item" data-headerId="3"><a>订单信息</a></li>
+        </ul>
+
+        <!-- 用户信息与退出 -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://f.hiphotos.baidu.com/zhidao/pic/item/4034970a304e251f681d65aea186c9177e3e53fa.jpg" class="layui-nav-img">Admin管理员
+                </a>
+            </li>
+            <li class="layui-nav-item"><a href="{:url('/admin/Login/out')}">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll " id="side">
+            <!-- 垂直导航  -->
+            <ul class="layui-nav layui-nav-tree sa-show layui-anim layui-anim-up" lay-filter="test" data-headerId="1">
+                <li class="layui-nav-item" data-url="{:url('/admin/index/welcome')}"><a>首页</a></li>
+            </ul>
+
+            <ul class="layui-nav layui-nav-tree layui-anim layui-anim-up" lay-filter="test" data-headerId="2">
+                <li class="layui-nav-item" data-url="{:url('')}"><a>用户信息列表</a></li>
+                <li class="layui-nav-item" data-url="{:url('')}"><a>添加用户信息</a></li>
+            </ul>
+
+            <ul class="layui-nav layui-nav-tree layui-anim layui-anim-up" lay-filter="test" data-headerId="3">
+                <li class="layui-nav-item" data-url="{:url('')}"><a>案例列表</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 内容主体区域 -->
+    <div class="layui-body" style="overflow: hidden;">
+        <iframe src="{:url('/admin/index/welcome')}" id="frameShow" frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+
+    <!-- 底部固定区域 -->
+    <div class="layui-footer">
+        © www.h5gf.com - {$name}制作委员会 监制
+    </div>
+
+</div>
+
+
+<script src="{:url('/layui/layui.js')}"></script>
+
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(filter)', function (elem) {
+            var headerId = elem.context.dataset.headerid;
+            var dd = document.getElementById("side").getElementsByTagName("ul");
+            for (var i = 0; i < dd.length; i++) {
+                dd[i].classList.remove("sa-show");
+                if (headerId == dd[i].getAttribute("data-headerId")) {
+                    dd[i].classList.add("sa-show");
+                }
+            }
+        });
+        element.on('nav(test)', function (elem) {
+            var url = elem.context.dataset.url;
+            document.getElementById("frameShow").src = url;
+        });
+    });
+</script>
+</body>
+</html>

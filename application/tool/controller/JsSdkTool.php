@@ -86,6 +86,31 @@ class JsSdkTool extends BaseTool
         return $getSignature;
     }
 
+
+    /*
+     * 是否关注公众号
+     */
+    public function isPick($open_id)
+    {
+        // 获取access_token
+        $access = $this->getAccess();
+        $access_token = $access['access_token'];
+        $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$access_token}&openid={$open_id}&lang=zh_CN";
+        $data = json_decode(curl_get($url),true);
+        $flag = array_key_exists('errcode', $data);
+        if ($flag) {
+            throw new TokenException([
+                'msg' => '微信觉得你的OpenID有问题'
+            ]);
+        }
+        if ($data['subscribe'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     /*
      * 生成16位的随机字符串
      */

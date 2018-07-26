@@ -6,7 +6,7 @@
  * Time: 11:35
  */
 
-namespace app\tool\model;
+namespace app\model;
 
 class UserInfo extends BaseModel
 {

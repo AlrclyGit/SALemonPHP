@@ -8,7 +8,7 @@
 
 namespace app\tool\controller;
 
-use app\tool\model\UserInfo;
+use app\model\UserInfo;
 use app\lib\exception\TokenException;
 
 class LoginTool extends BaseTool

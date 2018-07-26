@@ -1,7 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alrcly
+ * 登录控制器
+ * User: 萧俊介
  * Date: 2018/7/23
  * Time: 下午5:49
  */

@@ -6,7 +6,7 @@
  * Time: 17:25
  */
 
-namespace app\tool\model;
+namespace app\model;
 
 class Image extends BaseModel
 {

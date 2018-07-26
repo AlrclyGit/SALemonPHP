@@ -9,8 +9,9 @@
 namespace app\tool\server;
 
 
+use app\model\UserInfo;
 use app\tool\controller\BaseTool;
-use app\tool\model\UserInfo;
+
 
 class UserInfoTool extends BaseTool
 {

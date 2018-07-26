@@ -10,7 +10,7 @@ namespace app\tool\controller;
 
 use app\lib\enum\PathEnum;
 use app\lib\exception\ToolException;
-use app\tool\model\Image;
+use app\model\Image;
 
 class ImageTool extends BaseTool
 {

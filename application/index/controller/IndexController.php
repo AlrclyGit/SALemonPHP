@@ -1,5 +1,6 @@
 <?php
 /**
+ * Created by LemonPHP制作委员会.
  * 入口控制器
  * User: 萧俊介
  * Date: 2018/1/30
@@ -10,7 +11,7 @@ namespace app\index\controller;
 
 use app\tool\controller\JsSdkTool;
 
-class IndexController extends BaseController
+class IndexController extends SessionBase
 {
 
     /*

@@ -1,6 +1,7 @@
 <?php
 /**
- * 基本控制器
+ * Created by LemonPHP制作委员会.
+ * Session基本控制器
  * User: 萧俊介
  * Date: 2018/1/25
  * Time: 18:30
@@ -12,7 +13,7 @@ use app\tool\controller\LoginTool;
 use app\model\UserInfo;
 use think\Controller;
 
-class BaseController extends Controller
+class SessionBase extends Controller
 {
 
     /*

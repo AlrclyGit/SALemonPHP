@@ -1,5 +1,6 @@
 <?php
 /**
+ * Created by LemonPHP制作委员会.
  * 基本验证器.
  * Author: 七月
  * Date: 2017/4/18

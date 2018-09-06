@@ -187,13 +187,19 @@ return [
 
     'cache' => [
         // 驱动方式
-        'type' => 'File',
+        'type' => 'Redis',
         // 缓存保存目录
         'path' => CACHE_PATH,
         // 缓存前缀
-        'prefix' => '',
+        'prefix' => config('config.project_english_name'),
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
+        // redis 主机
+        'host' => '127.0.0.1',
+        // redis 端口
+        'port' => 6379,
+        // redis 密码
+        'password' => '',
     ],
 
     // +----------------------------------------------------------------------
@@ -205,7 +211,7 @@ return [
         // SESSION_ID的提交变量,解决flash上传跨域
         'var_session_id' => '',
         // SESSION 前缀
-        'prefix' => 'think',
+        'prefix' => config('config.project_english_name'),
         // 驱动方式 支持redis memcache memcached
         'type' => 'redis',
         // 是否自动开启 SESSION

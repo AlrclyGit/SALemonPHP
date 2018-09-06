@@ -19,8 +19,7 @@ function curl_get($url, &$httpCode = 0)
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //不做证书校验
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //不做证书校验
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     $file_contents = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -28,7 +27,41 @@ function curl_get($url, &$httpCode = 0)
     return $file_contents;
 }
 
-/*
+/**
+ * 声明以POST方式请求的CURL功能函数
+ */
+function request_post($url, $data)
+{
+    $data = http_build_query($data);
+    $ch = curl_init();                                            // 启动一个CURL会话
+    curl_setopt($ch, CURLOPT_URL, $url);                    // 要访问的地址
+    curl_setopt($ch, CURLOPT_POST, 1);                // 发送一个常规的POST请求
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);            // POST提交的数据包
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);      // POST的返回方式
+    $tmpInfo = curl_exec($ch);                                    // 执行操作
+    if (curl_errno($ch)) {                                        // 判断是否有错误
+        throw  new \app\lib\exception\TokenException([
+            'code' => 60058,
+            'msg' => 'POST请求失败',
+            'data' => curl_errno($ch)
+        ]);
+    }
+    curl_close($ch);                                                // 关闭会话
+    return $tmpInfo;                                                // 返回数据
+}
+
+/**
+ * xml转数组
+ */
+function xmlToArray($xml)
+{
+    libxml_disable_entity_loader(true);  //禁止引用外部xml实体
+    $xmlString = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+    $val = json_decode(json_encode($xmlString), true);
+    return $val;
+}
+
+/**
  * 生成N位的随机字符串
  */
 function createRandomString($length = 16)
@@ -47,13 +80,11 @@ function createRandomString($length = 16)
  */
 function saReturn($code, $msg, $data = Null)
 {
-    return json_encode(
-        [
-            'code' => $code,  //true or false
-            'msg' => $msg,
-            'data' => $data
-        ]
-    );
+    return json([
+        'code' => $code,
+        'msg' => $msg,
+        'data' => $data
+    ]);
 }
 
 

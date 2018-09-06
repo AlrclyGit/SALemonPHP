@@ -11,7 +11,7 @@ namespace app\index\controller;
 
 use app\tool\controller\JsSdkTool;
 
-class IndexController extends SessionBase
+class IndexController extends BaseController
 {
 
     /*

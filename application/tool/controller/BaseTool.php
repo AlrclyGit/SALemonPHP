@@ -8,7 +8,6 @@
 
 namespace app\tool\controller;
 
-
 use think\Controller;
 
 class BaseTool extends Controller

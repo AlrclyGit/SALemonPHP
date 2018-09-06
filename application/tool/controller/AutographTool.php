@@ -1,6 +1,6 @@
 <?php
 /**
- * 签名生成控制器.
+ * 签名生成工具类.
  * User: 萧俊介
  * Date: 2018/5/17
  * Time: 15:32
@@ -35,7 +35,7 @@ class AutographTool extends BaseTool
 
     /*
      * 验证签名
-     * @string 签名的签名（必选）
+     * @string 需要验证的签名（必选）
      * @return 签名是否有效 0有效 1非法 （返回值）
      */
     public function isSign($string)
@@ -58,6 +58,7 @@ class AutographTool extends BaseTool
 
     /*
      * 生成签名
+     * @return 生成的签名（返回值）
      */
     public function sign()
     {

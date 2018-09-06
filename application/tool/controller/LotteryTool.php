@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by 血界战线委员会.
+ * Created by 抽奖工具类.
  * User: 萧俊介
  * Date: 2018/7/10
  * Time: 下午4:08

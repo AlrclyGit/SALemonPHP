@@ -1,6 +1,6 @@
 <?php
 /**
- * 商户信息、用户信息控制器
+ * 获取用户信息工具类
  * User: 萧俊介
  * Date: 2017/9/26
  * Time: 17:14
@@ -8,8 +8,8 @@
 
 namespace app\tool\controller;
 
-use app\model\UserInfo;
 use app\lib\exception\TokenException;
+use app\model\UserInfo;
 
 class LoginTool extends BaseTool
 {

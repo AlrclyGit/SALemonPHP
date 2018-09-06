@@ -1,6 +1,6 @@
 <?php
 /**
- * JsSDK控制器
+ * JsSDK工具类
  * User: 萧俊介
  * Date: 2017/10/11
  * Time: 10:49

@@ -9,11 +9,11 @@
 
 namespace app\index\controller;
 
+use app\model\UserInfoSession;
 use app\tool\controller\LoginTool;
-use app\model\UserInfo;
 use think\Controller;
 
-class SessionBase extends Controller
+class BaseController extends Controller
 {
 
     /*
@@ -23,9 +23,8 @@ class SessionBase extends Controller
     {
         parent::__construct();
         // 判断用户权限
-//        session('open_id', 'omhRa1ausF1sy1KI8VMVh2h8JTqo');
         if (session('open_id')) {
-            $userInfoM = new UserInfo();
+            $userInfoM = new UserInfoSession();
             $userInfo = $userInfoM->where('open_id', session('open_id'))->find();
             if (!$userInfo) {
                 (new LoginTool())->getWeChatUserInfo();

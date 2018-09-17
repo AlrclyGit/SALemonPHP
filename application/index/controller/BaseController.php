@@ -9,7 +9,7 @@
 
 namespace app\index\controller;
 
-use app\model\UserInfoSession;
+use app\model\UserInfo;
 use app\tool\controller\LoginTool;
 use think\Controller;
 
@@ -24,7 +24,7 @@ class BaseController extends Controller
         parent::__construct();
         // 判断用户权限
         if (session('open_id')) {
-            $userInfoM = new UserInfoSession();
+            $userInfoM = new UserInfo();
             $userInfo = $userInfoM->where('open_id', session('open_id'))->find();
             if (!$userInfo) {
                 (new LoginTool())->getWeChatUserInfo();

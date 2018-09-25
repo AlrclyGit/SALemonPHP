@@ -6,7 +6,7 @@
  * Time: 11:56
  */
 
-namespace app\lib\exception;
+namespace app\tool\exception;
 
 
 class ToolException extends BaseException

@@ -6,7 +6,7 @@
  * Time: 10:44
  */
 
-namespace app\lib\enum;
+namespace app\tool\enum;
 
 
 class PathEnum

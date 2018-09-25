@@ -8,8 +8,8 @@
 
 namespace app\tool\controller;
 
-use app\lib\exception\TokenException;
 use app\model\Access;
+use app\tool\exception\TokenException;
 use think\Request;
 
 class JsSdkTool extends BaseTool

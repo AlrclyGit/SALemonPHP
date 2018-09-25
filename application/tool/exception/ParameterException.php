@@ -6,7 +6,7 @@
  * Time: 11:15
  */
 
-namespace app\lib\exception;
+namespace app\tool\exception;
 
 
 class ParameterException extends BaseException

@@ -157,7 +157,7 @@ return [
     // 显示错误信息
     'show_error_msg' => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
-    'exception_handle' => 'app\lib\exception\ExceptionHandler',
+    'exception_handle' => 'app\tool\exception\ExceptionHandler',
 
     // +----------------------------------------------------------------------
     // | 日志设置
@@ -191,7 +191,7 @@ return [
         // 缓存保存目录
         'path' => CACHE_PATH,
         // 缓存前缀
-        'prefix' => config('config.project_english_name'),
+        'prefix' => '',
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
         // redis 主机
@@ -211,7 +211,7 @@ return [
         // SESSION_ID的提交变量,解决flash上传跨域
         'var_session_id' => '',
         // SESSION 前缀
-        'prefix' => config('config.project_english_name'),
+        'prefix' => '',
         // 驱动方式 支持redis memcache memcached
         'type' => 'redis',
         // 是否自动开启 SESSION

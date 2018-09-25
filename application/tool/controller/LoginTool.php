@@ -8,8 +8,8 @@
 
 namespace app\tool\controller;
 
-use app\lib\exception\TokenException;
 use app\model\UserInfo;
+use app\tool\exception\TokenException;
 
 class LoginTool extends BaseTool
 {
@@ -63,7 +63,7 @@ class LoginTool extends BaseTool
     {
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?";
         $url .= "appid={$this->appId}";
-        $url .= '&redirect_uri=' . urlencode('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $url .= '&redirect_uri=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $url .= '&response_type=code';
         if ($this->isOnlyOpenId) {
             $url .= '&scope=snsapi_base';
@@ -127,7 +127,7 @@ class LoginTool extends BaseTool
         }
         // 处理用户头像
         if (empty($userInfo ['headimgurl'])) {
-            $userInfo ['headimgurl'] = 'http://game.h5gf.cn/shuixingwuyu/img.jpg';
+            $userInfo ['headimgurl'] = 'https://oss.h5gf.com/avatar.jpg';
         }
         // 打包数组
         $userInfoArray = [

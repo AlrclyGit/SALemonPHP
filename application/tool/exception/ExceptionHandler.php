@@ -6,7 +6,7 @@
  * Time: 17:08
  */
 
-namespace app\lib\exception;
+namespace app\tool\exception;
 
 
 use think\exception\Handle;

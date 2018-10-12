@@ -24,42 +24,34 @@ class FaceTool extends BaseTool
     {
         parent::__construct();
         // 设置变量
-        $this->appKye = 'T29ZGY4MxAvRGw29';
-        $this->appId = '2108337140';
-    }
-
-
-    /*
-     * 人脸融合方法
-     */
-    public function getFace()
-    {
-        // 接收参数
-        $param = input('param.');
-        return $this->upload($this->appKye, $this->appId, $param['model'], $param['img']);
+        $this->appKye = Config("config.face_app_key");
+        $this->appId = Config("config.face_app_id");
     }
 
 
     /*
      * 接收Base64图片，并进行人脸融合
+     * $return
      */
-    private function upload($appKye, $appId, $modelId, $img)
+    public function getFace()
     {
+        // 接收参数
+        $param = input('param.');
         // 设置时间戳和随机数
         $time_stamp = time();
         $nonce_str = rand(10000, 99999);
         // 处理基本信息
-        $image = ltrim(strstr($img, ','), ',');
+        $image = ltrim(strstr($param['img'], ','), ',');
         // 拼接字符串，并签名
-        $string = 'app_id=' . $appId . '&image=' . urlencode($image) . '&model=' . $modelId . '&nonce_str=' . $nonce_str . '&time_stamp=' . $time_stamp . '&app_key=' . $appKye;
+        $string = 'app_id=' . $this->appId . '&image=' . urlencode($image) . '&model=' . $param['model'] . '&nonce_str=' . $nonce_str . '&time_stamp=' . $time_stamp . '&app_key=' . $this->appKye;
         $sign = strtoupper(md5($string));
         // 构建请求的数组
         $post_data = array(
-            'app_id' => $appId,
+            'app_id' => $this->appId,
             'time_stamp' => $time_stamp,
             'nonce_str' => $nonce_str,
             'sign' => $sign,
-            'model' => $modelId,
+            'model' => $param['model'],
             'image' => $image
         );
         // 调用人脸整合的接口

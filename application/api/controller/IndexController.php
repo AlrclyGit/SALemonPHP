@@ -7,7 +7,8 @@
  * Created by LemonPHP制作委员会.
  */
 
-namespace app\index\controller;
+namespace app\api\controller;
+
 
 class IndexController extends BaseController
 {

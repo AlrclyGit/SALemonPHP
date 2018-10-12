@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 基本错误类.
+ * Name: 基本错误类.
  * User: 萧俊介
  * Date: 2018/4/23
  * Time: 17:09
@@ -14,7 +14,7 @@ use think\Exception;
 class BaseException extends Exception
 {
     // 错误码
-    public $code = 400;
+    public $code = 100000;
     // 错误具体信息
     public $msg = null;
     // 附带的参数

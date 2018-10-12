@@ -9,7 +9,7 @@
 namespace app\tool\controller;
 
 use app\model\UserInfo;
-use app\tool\exception\TokenException;
+use app\tool\exception\ServerException;
 
 class LoginTool extends BaseTool
 {
@@ -100,13 +100,13 @@ class LoginTool extends BaseTool
                         'data' => $userInfoArr
                     ];
                 } else {
-                    throw new TokenException([
+                    throw new ServerException([
                         'msg' => '获取用户信息失败'
                     ]);
                 }
             }
         } else {
-            throw new TokenException([
+            throw new ServerException([
                 'msg' => '获取OpenID失败'
             ]);
         }
@@ -122,18 +122,15 @@ class LoginTool extends BaseTool
         // 处理用户名称
         $nickName = $userInfo['nickname'];
         $nickName = $this->filterEmoji($nickName);
-        if (empty($nickName)) {
-            $nickName = '昵称为空';
-        }
+        $nickName = $nickName ? $nickName : '昵称为空';
         // 处理用户头像
-        if (empty($userInfo ['headimgurl'])) {
-            $userInfo ['headimgurl'] = 'https://oss.h5gf.com/avatar.jpg';
-        }
+        $headImaUrl = $userInfo ['headimgurl'];
+        $headImaUrl = $headImaUrl ? $headImaUrl : 'https://oss.h5gf.com/avatar.jpg';
         // 打包数组
         $userInfoArray = [
             'nickname' => $nickName, // 昵称
             'open_id' => $userInfo ['openid'], // openId
-            'head_img_url' => $userInfo ['headimgurl'], // 头像地址
+            'head_img_url' => $headImaUrl, // 头像地址
             'sex' => $userInfo ['sex'], // 性别
             'province' => $userInfo ['province'], // 用户个人资料填写的省份
             'city' => $userInfo ['city'], // 普通用户个人资料填写的城市
@@ -154,8 +151,8 @@ class LoginTool extends BaseTool
     {
         session('open_id', $openId);
         $userInfoM = new UserInfo();
-        $userInfoDb = $userInfoM->where('open_id', $openId)->find();
-        if (!$userInfoDb) {
+        $userInfo = $userInfoM->where('open_id', $openId)->find();
+        if (!$userInfo) {
             $userInfoM->save(['open_id' => $openId]);
         }
     }

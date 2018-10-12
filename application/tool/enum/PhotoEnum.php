@@ -9,8 +9,8 @@
 namespace app\tool\enum;
 
 
-class PathEnum
+class PhotoEnum
 {
     // 本地图片访问路径
-    const imagePath = 1;
+    const localImage = 1;
 }

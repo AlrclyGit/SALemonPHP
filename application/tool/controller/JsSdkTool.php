@@ -9,7 +9,7 @@
 namespace app\tool\controller;
 
 use app\model\Access;
-use app\tool\exception\TokenException;
+use app\tool\exception\ServerException;
 use think\Request;
 
 class JsSdkTool extends BaseTool
@@ -41,7 +41,7 @@ class JsSdkTool extends BaseTool
         $access = $this->getAccess();
         $jsApiTicket = $access['js_api_ticket'];
         // 生成16位的随机字符串
-        $nonceStr = $this->createNonceStr();
+        $nonceStr = createRandomString();
         // 时间戳
         $timestamp = time();
         // Url
@@ -72,7 +72,7 @@ class JsSdkTool extends BaseTool
         $access = $this->getAccess();
         $api_ticket = $access['api_ticket'];
         // 16位的随机字符串
-        $nonce_str = $this->createNonceStr();
+        $nonce_str = createRandomString();
         // 字符串排序
         $stringArr = [$timestamp, $api_ticket, $nonce_str, $card_id];
         // 签名加密
@@ -99,7 +99,7 @@ class JsSdkTool extends BaseTool
         $data = json_decode(curl_get($url),true);
         $flag = array_key_exists('errcode', $data);
         if ($flag) {
-            throw new TokenException([
+            throw new ServerException([
                 'msg' => '微信觉得你的OpenID有问题'
             ]);
         }
@@ -109,19 +109,6 @@ class JsSdkTool extends BaseTool
             return false;
         }
 
-    }
-
-    /*
-     * 生成16位的随机字符串
-     */
-    private function createNonceStr($length = 16)
-    {
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        $str = "";
-        for ($i = 0; $i < $length; $i++) {
-            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
-        }
-        return $str;
     }
 
     /*
@@ -173,12 +160,12 @@ class JsSdkTool extends BaseTool
                         return $accessData;
                     }
                 } else {
-                    throw new TokenException([
+                    throw new ServerException([
                         'msg' => '获取js_api_ticket或api_ticket失败'
                     ]);
                 }
             } else {
-                throw new TokenException([
+                throw new ServerException([
                     'msg' => '获取access_token失败',
                     'data' => $token
                 ]);

@@ -9,8 +9,6 @@
 namespace app\tool\controller;
 
 
-use app\model\Image;
-use app\tool\enum\PathEnum;
 use app\tool\exception\ToolException;
 
 class ImageTool extends BaseTool
@@ -27,30 +25,16 @@ class ImageTool extends BaseTool
         // 获取表单上传文件
         $file = request()->file($image);
         if ($file) {
-            // 移动到框架指定目录
-            if ($path == null) {
-                $path = config('config.file_image_path');
-            }
+            // 获取普通图片保存地址
+            $path = $path ? $path : config('config.file_image_path');
+            // 将图片移动到指定文件夹（细节TP5自动完成）
             $info = $file->move(ROOT_PATH . 'public' . DS . $path);
+            // 判断图片移动是否成功
             if ($info) {
                 // 图片名
                 $SaveName = $info->getSaveName();
-                // 完整图片地址
-                $imageUrl = config('config.root_path') . $path . $SaveName;
-                // 图片写入数据库
-                $imageM = new Image();
-                $data = [
-                    'url' => $SaveName,
-                    'from' => PathEnum::imagePath
-                ];
-                $imageM->save($data);
-                $imageId = $imageM->id;
-                // 返回给前端的数据
-                $data = [
-                    'image_id' => $imageId,
-                    'image_url' => $imageUrl
-                ];
-                return saReturn(0, 'OK', $data);
+                // 返回一个图片的相对地址
+                return $path . $SaveName;
             } else {
                 // 上传失败获取错误信息
                 throw new ToolException([
@@ -67,36 +51,31 @@ class ImageTool extends BaseTool
 
     /*
      * 处理Base64图片
-     * @base64Image 需要处理的Base64图片（必选）
+     * @$imageName 需要处理的Base64图片名（必选）
      * @path 图片的保存地址，public文件夹为根目录，为空时使用config.base64_image_path的配置（非必选）
+     * @return 返回一个图片的相对地址
      */
-    public static function setBase64($base64Image, $path = null)
+    public static function setBase64($imageName = 'image', $imageCatalogPath = null)
     {
-        if ($path == null) {
-            $path = config('config.base64_image_path');
-        }
+        // 获取Base64图片的数据
+        $base64Image = input("param.$imageName");
+        // 获取Base64图片保存地址
+        $imageCatalogPath = $imageCatalogPath ? $imageCatalogPath : config('config.base64_image_path');
+        // 判断是否为Base64图片
         if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64Image, $result)) {
+            // 获取图片类型
             $imageType = $result[2];
-            $newFile = $path . date('Ymd', time()) . DS;
-            if (!file_exists($newFile)) {
-                mkdir($newFile, 0777, true);
+            // 创建图片日期地址，如果不存在则创建
+            $imageTimePath = $imageCatalogPath . date('Ymd', time()) . DS;
+            if (!file_exists($imageTimePath)) {
+                mkdir($imageTimePath, 0777, true);
             }
-            $newImage = $newFile . time() . ".{$imageType}";
-            if (file_put_contents($newImage, base64_decode(str_replace($result[1], '', $base64Image)))) {
-                // 图片写入数据库
-                $imageM = new Image();
-                $data = [
-                    'url' => $newImage,
-                    'from' => PathEnum::imagePath
-                ];
-                $imageM->save($data);
-                $imageId = $imageM->id;
-                // 返回给前端的数据
-                $data = [
-                    'image_id' => $imageId,
-                    'image_url' => $newImage
-                ];
-                return saReturn(0, 'OK', $data);
+            // 拼接完整的图片保存地址
+            $imagePath = $imageTimePath . time() . ".{$imageType}";
+            // 保存Base64图片，并判断是否成功
+            if (file_put_contents($imagePath, base64_decode(str_replace($result[1], '', $base64Image)))) {
+                // 返回一个图片的相对地址
+                return $imagePath;
             } else {
                 throw new ToolException([
                     'msg' => '保存Base64图片失败'

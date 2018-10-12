@@ -1,15 +1,16 @@
 <?php
 /**
- * Created by LemonPHP制作委员会.
- * Session基本控制器
+
+ * 基本控制器
  * User: 萧俊介
  * Date: 2018/1/25
  * Time: 18:30
+ * Created by LemonPHP制作委员会.
  */
 
-namespace app\index\controller;
+namespace app\api\controller;
 
-use app\model\UserInfo;
+use app\api\model\UserInfo;
 use app\tool\controller\LoginTool;
 use think\Controller;
 

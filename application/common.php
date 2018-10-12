@@ -9,12 +9,12 @@
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-//// 应用公共文件
+// 应用公共文件
 
 /**
- * 表送Get方式的URL请求
+ * Get方式的CURL请求
  */
-function curl_get($url, &$httpCode = 0)
+function saRequestGet($url, &$httpCode = 0)
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -28,9 +28,9 @@ function curl_get($url, &$httpCode = 0)
 }
 
 /**
- * 声明以POST方式请求的CURL功能函数
+ * POST方式请求的CURL
  */
-function request_post($url, $data)
+function saRequestPost($url, $data)
 {
     $data = http_build_query($data);
     $ch = curl_init();                                            // 启动一个CURL会话
@@ -40,7 +40,7 @@ function request_post($url, $data)
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);      // POST的返回方式
     $tmpInfo = curl_exec($ch);                                    // 执行操作
     if (curl_errno($ch)) {                                        // 判断是否有错误
-        throw  new \app\lib\exception\TokenException([
+        throw  new \app\tool\exception\ServerException([
             'code' => 60058,
             'msg' => 'POST请求失败',
             'data' => curl_errno($ch)
@@ -53,7 +53,7 @@ function request_post($url, $data)
 /**
  * xml转数组
  */
-function xmlToArray($xml)
+function saXmlToArray($xml)
 {
     libxml_disable_entity_loader(true);  //禁止引用外部xml实体
     $xmlString = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
@@ -64,7 +64,7 @@ function xmlToArray($xml)
 /**
  * 生成N位的随机字符串
  */
-function createRandomString($length = 16)
+function saRandomString($length = 16)
 {
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $str = "";
@@ -78,12 +78,12 @@ function createRandomString($length = 16)
 /**
  * 将参数组装成json数据
  */
-function saReturn($code, $msg, $data = Null)
+function saReturn($errorCode, $reason, $result = [])
 {
     return json([
-        'code' => $code,
-        'msg' => $msg,
-        'data' => $data
+        'code' => $errorCode,
+        'msg' => $reason,
+        'data' => $result
     ]);
 }
 

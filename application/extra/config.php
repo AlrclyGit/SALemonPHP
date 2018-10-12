@@ -14,12 +14,16 @@ return [
     'isOnlyOpenId' => false,                        // 是否静默授权
 
     // 文件路径
-    'root_path' => 'http://game.h5gf.cn' . DS . 'jinhuijt' . DS . 'public' . DS,         // 根目录（拼接图片时会用到）
-    'file_image_path' => 'fileImage' . DS,                                               // 图片文件保存地址
-    'base64_image_path' => 'base64Image' . DS,                                           // 图片Base64保存地址
+    'file_image_path' => 'fileImage' . DS,         // 图片文件保存地址
+    'base64_image_path' => 'base64Image' . DS,     // 图片Base64保存地址
 
     // 项目名称配置
-    'project_english_name' => 'summer',  // 项目英文名
-    'project_china_name' => '彩色夏天',  // 项目中文名
+    'project_english_name' => 'summer',     // 项目英文名
+    'project_china_name' => '彩色夏天',      // 项目中文名
+
+    // Tool
+    'autograph_secret' => '',           // 签名工具类使用的secret
+    'face_app_key' => '',               // 人脸融合类使用的app_key
+    'face_app_id' => '',                // 人脸融合类使用的app_id
 
 ];

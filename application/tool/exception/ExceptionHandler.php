@@ -1,6 +1,7 @@
 <?php
+
 /**
- * 重写ThinkPHP5的全局异常类.
+ * Name: 重写ThinkPHP5的全局异常类.
  * User: 萧俊介
  * Date: 2018/4/23
  * Time: 17:08
@@ -32,18 +33,16 @@ class ExceptionHandler extends Handle
             if (config('app_debug')) {
                 return parent::render($e);
             } else {
-                $this->code = 233;
-                $this->msg = "没错，就是后端的锅，快去找俊介。";
+                $this->code = 100001;
+                $this->msg = "系统级错误";
                 $this->recordErrorLog($e);
             }
         }
         // 设置返回的内容
-        $request = Request::instance();
         $result = [
             'code' => $this->code,
             'msg' => $this->msg,
             'data' => $this->data,
-            'request_url' => $request->url()
         ];
         return json($result);
     }

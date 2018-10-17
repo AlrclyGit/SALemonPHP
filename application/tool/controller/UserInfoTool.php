@@ -1,6 +1,6 @@
 <?php
 /**
- * 用户信息ID、OpenId工具类.
+ * Name: 用户信息ID、OpenId工具类.
  * User: 萧俊介
  * Date: 2018/6/21
  * Time: 10:15

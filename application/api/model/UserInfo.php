@@ -1,6 +1,6 @@
 <?php
 /**
- * 用户信息模型.
+ * Name: 用户信息模型.
  * User: Suzuki
  * Date: 2018/3/5
  * Time: 11:35

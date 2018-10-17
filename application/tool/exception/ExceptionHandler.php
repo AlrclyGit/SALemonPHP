@@ -12,7 +12,6 @@ namespace app\tool\exception;
 
 use think\exception\Handle;
 use think\Log;
-use think\Request;
 
 class ExceptionHandler extends Handle
 {

@@ -1,7 +1,6 @@
 <?php
 /**
- * Created by 基本验证器.
- *
+ * Name: 基本验证器.
  * Author: 七月
  * Date: 2017/4/18
  * Time: 5:15
@@ -9,7 +8,7 @@
 
 namespace app\tool\validate;
 
-use app\lib\exception\ParameterException;
+use app\tool\exception\ServerException;
 use think\Request;
 use think\Validate;
 
@@ -30,7 +29,8 @@ class BaseValidate extends Validate
 
         //判断并处理错误
         if (!$result) {
-            throw new ParameterException([
+            throw new ServerException([
+                'code' => 100003,
                 'msg' => $this->error,  //利用构造函数传入错误信息
             ]);
         } else {
@@ -44,8 +44,9 @@ class BaseValidate extends Validate
     public function getDataRule($arrays)
     {
         if (array_key_exists('open_id', $arrays)) {
-            throw new ParameterException([
-                'msg' => '参数中包含有非法的参数名user_id或者uid'
+            throw new ServerException([
+                'code' => 100003,
+                'msg' => '参数中包含有非法的参数名open_id'
             ]);
         } else {
             $newArray = [];
@@ -84,7 +85,7 @@ class BaseValidate extends Validate
     /*
      * 手机号码验证
      */
-    protected function isMobile($value)
+    protected function isMobile($value, $rule = '', $data = '', $field = '')
     {
         $rule = '^1(3|4|5|7|8)[0-9]\d{8}$^';
         $result = preg_match($rule, $value);

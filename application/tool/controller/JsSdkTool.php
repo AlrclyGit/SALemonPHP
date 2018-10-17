@@ -1,6 +1,6 @@
 <?php
 /**
- * JsSDK工具类
+ * Name: JsSDK工具类
  * User: 萧俊介
  * Date: 2017/10/11
  * Time: 10:49
@@ -8,8 +8,9 @@
 
 namespace app\tool\controller;
 
-use app\model\Access;
+
 use app\tool\exception\ServerException;
+use app\tool\model\Access;
 use think\Request;
 
 class JsSdkTool extends BaseTool
@@ -41,7 +42,7 @@ class JsSdkTool extends BaseTool
         $access = $this->getAccess();
         $jsApiTicket = $access['js_api_ticket'];
         // 生成16位的随机字符串
-        $nonceStr = createRandomString();
+        $nonceStr = saRandomString();
         // 时间戳
         $timestamp = time();
         // Url
@@ -72,7 +73,7 @@ class JsSdkTool extends BaseTool
         $access = $this->getAccess();
         $api_ticket = $access['api_ticket'];
         // 16位的随机字符串
-        $nonce_str = createRandomString();
+        $nonce_str = saRandomString();
         // 字符串排序
         $stringArr = [$timestamp, $api_ticket, $nonce_str, $card_id];
         // 签名加密
@@ -96,10 +97,11 @@ class JsSdkTool extends BaseTool
         $access = $this->getAccess();
         $access_token = $access['access_token'];
         $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$access_token}&openid={$open_id}&lang=zh_CN";
-        $data = json_decode(curl_get($url),true);
+        $data = json_decode(saRequestGet($url),true);
         $flag = array_key_exists('errcode', $data);
         if ($flag) {
             throw new ServerException([
+                'code' => 100002,
                 'msg' => '微信觉得你的OpenID有问题'
             ]);
         }
@@ -136,7 +138,7 @@ class JsSdkTool extends BaseTool
         if ($accessDb['valid_time'] + $accessDb['expires_in'] > time()) {
             return $accessDb;
         } else {
-            $tokenUrl = curl_get("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->secret}");
+            $tokenUrl = saRequestGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->secret}");
             $token = json_decode($tokenUrl, true);
             if (isset($token['access_token'])) {
                 $jsApiUrl = file_get_contents("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={$token['access_token']}&type=jsapi");
@@ -161,11 +163,13 @@ class JsSdkTool extends BaseTool
                     }
                 } else {
                     throw new ServerException([
+                        'code' => 100002,
                         'msg' => '获取js_api_ticket或api_ticket失败'
                     ]);
                 }
             } else {
                 throw new ServerException([
+                    'code' => 100002,
                     'msg' => '获取access_token失败',
                     'data' => $token
                 ]);

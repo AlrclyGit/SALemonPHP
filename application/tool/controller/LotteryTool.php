@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by 抽奖工具类.
+ * Name: 抽奖工具类.
  * User: 萧俊介
  * Date: 2018/7/10
  * Time: 下午4:08

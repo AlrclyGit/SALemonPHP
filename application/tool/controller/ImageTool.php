@@ -1,6 +1,6 @@
 <?php
 /**
- * 图片处理工具类.
+ * Name: 图片处理工具类.
  * User: 萧俊介
  * Date: 2018/5/29
  * Time: 11:37
@@ -9,7 +9,7 @@
 namespace app\tool\controller;
 
 
-use app\tool\exception\ToolException;
+use app\tool\exception\SystemException;
 
 class ImageTool extends BaseTool
 {
@@ -37,13 +37,15 @@ class ImageTool extends BaseTool
                 return $path . $SaveName;
             } else {
                 // 上传失败获取错误信息
-                throw new ToolException([
+                throw new SystemException([
+                    'code' => 100002,
                     'msg' => '移动图片到框架指定目录失败',
                     'data' => $file->getError()
                 ]);
             }
         } else {
-            throw new ToolException([
+            throw new SystemException([
+                'code' => 100002,
                 'msg' => '获取表单上传文件失败，建议检测参数名',
             ]);
         }
@@ -77,12 +79,14 @@ class ImageTool extends BaseTool
                 // 返回一个图片的相对地址
                 return $imagePath;
             } else {
-                throw new ToolException([
+                throw new SystemException([
+                    'code' => 100002,
                     'msg' => '保存Base64图片失败'
                 ]);
             }
         } else {
-            throw new ToolException([
+            throw new SystemException([
+                'code' => 100002,
                 'msg' => '格式不为Base64'
             ]);
         }

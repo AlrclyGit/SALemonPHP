@@ -1,6 +1,6 @@
 <?php
 /**
- * 获取用户信息工具类
+ * Name: 获取用户信息工具类
  * User: 萧俊介
  * Date: 2017/9/26
  * Time: 17:14
@@ -8,7 +8,7 @@
 
 namespace app\tool\controller;
 
-use app\model\UserInfo;
+use app\tool\model\UserInfo;
 use app\tool\exception\ServerException;
 
 class LoginTool extends BaseTool
@@ -81,7 +81,7 @@ class LoginTool extends BaseTool
     public function getUserInfo($code)
     {
         // 通过 code 换取网页授权 access_token
-        $accessTokenUrl = curl_get("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->secret}&code={$code}&grant_type=authorization_code");
+        $accessTokenUrl = saRequestGet("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->secret}&code={$code}&grant_type=authorization_code");
         $accessTokenArr = json_decode($accessTokenUrl, true);
         if (empty($accessTokenArr['errcode'])) {
             // 是否为静默授权
@@ -101,12 +101,14 @@ class LoginTool extends BaseTool
                     ];
                 } else {
                     throw new ServerException([
+                        'code' => 100002,
                         'msg' => '获取用户信息失败'
                     ]);
                 }
             }
         } else {
             throw new ServerException([
+                'code' => 100002,
                 'msg' => '获取OpenID失败'
             ]);
         }

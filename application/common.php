@@ -14,17 +14,19 @@
 /**
  * Get方式的CURL请求
  */
-function saRequestGet($url, &$httpCode = 0)
+function saRequestGet($url)
 {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //不做证书校验
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-    $file_contents = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    // 初始化
+    $ch = curl_init(); // 创建一个CURL资源
+    // 设置变量
+    curl_setopt($ch, CURLOPT_URL, $url); // 设置URL
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //不输出获取的结果
+    // 执行并获取结果
+    $output = curl_exec($ch);
+    // 释放CURL
     curl_close($ch);
-    return $file_contents;
+    // 返回结果
+    return $output;
 }
 
 /**
@@ -32,22 +34,18 @@ function saRequestGet($url, &$httpCode = 0)
  */
 function saRequestPost($url, $data)
 {
-    $data = http_build_query($data);
-    $ch = curl_init();                                            // 启动一个CURL会话
+    // 初始化
+    $ch = curl_init(); // 创建一个CURL资源
+    // 设置变量
     curl_setopt($ch, CURLOPT_URL, $url);                    // 要访问的地址
     curl_setopt($ch, CURLOPT_POST, 1);                // 发送一个常规的POST请求
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);            // POST提交的数据包
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);      // POST的返回方式
-    $tmpInfo = curl_exec($ch);                                    // 执行操作
-    if (curl_errno($ch)) {                                        // 判断是否有错误
-        throw  new \app\tool\exception\ServerException([
-            'code' => 60058,
-            'msg' => 'POST请求失败',
-            'data' => curl_errno($ch)
-        ]);
-    }
-    curl_close($ch);                                                // 关闭会话
-    return $tmpInfo;                                                // 返回数据
+    // 执行并获取结果
+    $tmpInfo = curl_exec($ch);
+    // 释放CURL
+    curl_close($ch);
+    // 返回结果
+    return $tmpInfo;
 }
 
 /**
@@ -57,8 +55,8 @@ function saXmlToArray($xml)
 {
     libxml_disable_entity_loader(true);  //禁止引用外部xml实体
     $xmlString = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
-    $val = json_decode(json_encode($xmlString), true);
-    return $val;
+    $array = json_decode(json_encode($xmlString), true);
+    return $array;
 }
 
 /**
@@ -78,12 +76,12 @@ function saRandomString($length = 16)
 /**
  * 将参数组装成json数据
  */
-function saReturn($errorCode, $reason, $result = [])
+function saReturn($code, $msg, $data = NULL)
 {
     return json([
-        'code' => $errorCode,
-        'msg' => $reason,
-        'data' => $result
+        'code' => $code,
+        'msg' => $msg,
+        'data' => $data
     ]);
 }
 

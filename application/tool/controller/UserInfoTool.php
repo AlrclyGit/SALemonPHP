@@ -9,7 +9,7 @@
 namespace app\tool\server;
 
 
-use app\model\UserInfo;
+use app\api\model\UserInfo;
 use app\tool\controller\BaseTool;
 
 

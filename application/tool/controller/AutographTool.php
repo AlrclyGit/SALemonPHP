@@ -1,6 +1,6 @@
 <?php
 /**
- * 签名生成工具类.
+ * Name: 签名生成工具类.
  * User: 萧俊介
  * Date: 2018/5/17
  * Time: 15:32
@@ -34,7 +34,7 @@ class AutographTool extends BaseTool
     public function sign()
     {
         // 生成8位的随机字符串
-        $randomString = createRandomString(8);
+        $randomString = saRandomString(8);
         // 生成签名
         $sign = md5(md5($randomString) . $this->autographKey);
         // 取签名部分的前8位

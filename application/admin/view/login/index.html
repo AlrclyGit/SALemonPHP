@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$name} 后台登录页面</title>
+    <link rel="stylesheet" href="{:url('/layui/css/layui.css')}">
+    <style>
+        .bodyShow {
+            width: 500px;
+            margin: 0 auto;
+            margin-top: 10%;
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="bodyShow">
+    <form class="layui-form" action="" method="post">
+        <div style="margin: 0 auto 10px auto;width: 340px;font-size: 50px;">{$name} LOGIN</div>
+        <!--账号-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required lay-verify="required" placeholder="请输入账号" autocomplete="off"
+                       class="layui-input" style="width: 300px">
+            </div>
+        </div>
+        <!--密码-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off"
+                       class="layui-input" style="width: 300px">
+            </div>
+        </div>
+        <input type="hidden" name="type" value="login">
+        <!--提交-->
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script src="{:url('/layui/layui.js')}"></script>
+<script src="{:url('/js/jquery-3.3.1.js')}"></script>
+<script>
+    // 监听表单的提交
+    layui.use('form', function () {
+        var form = layui.form;
+        form.on('submit(formDemo)', function ($data) {
+
+        });
+    });
+</script>
+</body>
+</html>

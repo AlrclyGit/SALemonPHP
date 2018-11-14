@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>welcome</title>
+    <link rel="stylesheet" href="{:url('/layui/css/layui.css')}">
+</head>
+<body>
+
+<div style="margin: 20px">
+
+<fieldset class="layui-elem-field">
+    <legend>系统基本信息</legend>
+    <div class="layui-field-box">
+        <table class="layui-table">
+            <colgroup>
+                <col width="100px">
+                <col width="90%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>项目</th>
+                <th>值</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>操作系统</td>
+                <td>CentOS</td>
+            </tr>
+            <tr>
+                <td>运行环境</td>
+                <td>Apache、MySql、PHP</td>
+            </tr>
+            <tr>
+                <td>PHP版本号</td>
+                <td>PHP7.1.6</td>
+            </tr>
+            <tr>
+                <td>根目录</td>
+                <td>{$server['DOCUMENT_ROOT']}</td>
+            </tr>
+            <tr>
+                <td>服务器域名/IP</td>
+                <td>{$server['SERVER_ADDR']}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+
+    <fieldset class="layui-elem-field">
+        <legend>使用帮助</legend>
+        <div class="layui-field-box">
+            友情提示使用本后台管理系统请配合手册使用，如有问题，请联系<a href="mailto:xiaohan@h5gf.com">萧俊介</a>。
+        </div>
+    </fieldset>
+
+</div>
+
+<script src="{:url('/layui/layui.js')}"></script>
+<script>
+
+</script>
+</body>
+</html>

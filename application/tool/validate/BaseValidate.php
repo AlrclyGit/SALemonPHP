@@ -39,25 +39,6 @@ class BaseValidate extends Validate
     }
 
     /*
-     * 参数过滤效验
-     */
-    public function getDataRule($arrays)
-    {
-        if (array_key_exists('open_id', $arrays)) {
-            throw new ServerException([
-                'code' => 100003,
-                'msg' => '参数中包含有非法的参数名open_id'
-            ]);
-        } else {
-            $newArray = [];
-            foreach ($this->rule as $key => $value) {
-                $newArray[$key] = $arrays[$key];
-            }
-            return $newArray;
-        }
-    }
-
-    /*
      * 验证的参数必须是正整数
      *
      */

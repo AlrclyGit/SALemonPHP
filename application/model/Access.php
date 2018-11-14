@@ -6,7 +6,7 @@
  * Time: 17:54
  */
 
-namespace app\api\model;
+namespace app\model;
 
 class Access extends BaseModel
 {

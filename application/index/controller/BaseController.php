@@ -7,9 +7,9 @@
  * Created by LemonPHP制作委员会.
  */
 
-namespace app\api\controller;
+namespace app\index\controller;
 
-use app\api\model\UserInfo;
+use app\model\UserInfo;
 use app\tool\controller\LoginTool;
 use think\Controller;
 

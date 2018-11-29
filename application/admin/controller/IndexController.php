@@ -18,7 +18,7 @@ class IndexController extends BaseController
      */
     function index()
     {
-        $this->assign('name', config('config.project_china_name'));
+        $this->assign('name', config('config.project_name'));
         return $this->fetch();
     }
 
@@ -28,7 +28,7 @@ class IndexController extends BaseController
      */
     function welcome()
     {
-        $this->assign('name', config('config.project_china_name'));
+        $this->assign('name', config('config.project_name'));
         $this->assign('server', $_SERVER);
         return $this->fetch();
     }

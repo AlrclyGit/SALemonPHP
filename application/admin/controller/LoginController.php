@@ -28,7 +28,7 @@ class LoginController extends Controller
                 $this->error('登录失败', 'admin/Login/index');
             }
         }
-        $this->assign('name',config('config.project_china_name'));
+        $this->assign('name',config('config.project_name'));
         return $this->fetch();
     }
 

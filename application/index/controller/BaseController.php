@@ -9,7 +9,7 @@
 
 namespace app\index\controller;
 
-use app\tool\model\UserInfo;
+use app\model\UserInfo;
 use app\tool\controller\LoginTool;
 use think\Controller;
 

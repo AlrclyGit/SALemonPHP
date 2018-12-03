@@ -10,6 +10,7 @@ namespace app\tool\controller;
 
 
 use app\tool\exception\ServerException;
+use app\tool\exception\ToolException;
 use app\tool\model\Access;
 use think\Request;
 
@@ -100,8 +101,8 @@ class JsSdkTool extends BaseTool
         $data = json_decode(saRequestGet($url),true);
         $flag = array_key_exists('errcode', $data);
         if ($flag) {
-            throw new ServerException([
-                'code' => 100002,
+            throw new ToolException([
+                'code' => 102001,
                 'msg' => '微信觉得你的OpenID有问题'
             ]);
         }
@@ -163,13 +164,13 @@ class JsSdkTool extends BaseTool
                     }
                 } else {
                     throw new ServerException([
-                        'code' => 100002,
+                        'code' => 102002,
                         'msg' => '获取js_api_ticket或api_ticket失败'
                     ]);
                 }
             } else {
                 throw new ServerException([
-                    'code' => 100002,
+                    'code' => 102003,
                     'msg' => '获取access_token失败',
                     'data' => $token
                 ]);

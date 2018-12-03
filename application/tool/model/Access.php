@@ -8,9 +8,7 @@
 
 namespace app\tool\model;
 
-use think\Model;
-
-class Access extends Model
+class Access extends BaseModel
 {
 
 }

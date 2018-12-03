@@ -9,8 +9,9 @@
 
 namespace app\index\controller;
 
-use app\model\UserInfo;
+
 use app\tool\controller\LoginTool;
+use app\tool\model\UserInfo;
 use think\Controller;
 
 class BaseController extends Controller

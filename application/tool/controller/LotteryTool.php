@@ -15,11 +15,13 @@ class LotteryTool extends BaseTool
 
     /*
      * 抽奖核心方法
+     * number 数量
+     * state 开关
      */
     static function getLotteryID($lotteryArray)
     {
         foreach ($lotteryArray as $k => $v) {
-            if ($lotteryArray[$k]['prize_number'] == 0 || $lotteryArray[$k]['prize_state'] == 0) {
+            if ($lotteryArray[$k]['number'] == 0 || $lotteryArray[$k]['state'] == 0) {
                 $lotteryArray[$k]['chance'] = 0;
             }
         }

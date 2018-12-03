@@ -9,7 +9,7 @@
 namespace app\tool\controller;
 
 
-use app\tool\exception\SystemException;
+use app\tool\exception\ToolException;
 
 class ImageTool extends BaseTool
 {
@@ -37,15 +37,15 @@ class ImageTool extends BaseTool
                 return $path . $SaveName;
             } else {
                 // 上传失败获取错误信息
-                throw new SystemException([
-                    'code' => 100002,
+                throw new ToolException([
+                    'code' => 101001,
                     'msg' => '移动图片到框架指定目录失败',
                     'data' => $file->getError()
                 ]);
             }
         } else {
-            throw new SystemException([
-                'code' => 100002,
+            throw new ToolException([
+                'code' => 101002,
                 'msg' => '获取表单上传文件失败，建议检测参数名',
             ]);
         }
@@ -79,14 +79,14 @@ class ImageTool extends BaseTool
                 // 返回一个图片的相对地址
                 return $imagePath;
             } else {
-                throw new SystemException([
-                    'code' => 100002,
+                throw new ToolException([
+                    'code' => 101003,
                     'msg' => '保存Base64图片失败'
                 ]);
             }
         } else {
-            throw new SystemException([
-                'code' => 100002,
+            throw new ToolException([
+                'code' => 101004,
                 'msg' => '格式不为Base64'
             ]);
         }

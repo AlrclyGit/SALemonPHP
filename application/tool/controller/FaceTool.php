@@ -31,7 +31,8 @@ class FaceTool extends BaseTool
 
     /*
      * 接收Base64图片，并进行人脸融合
-     * $return
+     * 接收参数img(Base64图片)、model（模版号)
+     * 直接返回腾讯的返回结果
      */
     public function getFace()
     {

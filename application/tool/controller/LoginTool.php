@@ -8,6 +8,7 @@
 
 namespace app\tool\controller;
 
+use app\tool\exception\ToolException;
 use app\tool\model\UserInfo;
 use app\tool\exception\ServerException;
 
@@ -100,15 +101,15 @@ class LoginTool extends BaseTool
                         'data' => $userInfoArr
                     ];
                 } else {
-                    throw new ServerException([
-                        'code' => 100002,
+                    throw new ToolException([
+                        'code' => 103001,
                         'msg' => '获取用户信息失败'
                     ]);
                 }
             }
         } else {
-            throw new ServerException([
-                'code' => 100002,
+            throw new ToolException([
+                'code' => 103002,
                 'msg' => '获取OpenID失败'
             ]);
         }

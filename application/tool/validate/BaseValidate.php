@@ -1,7 +1,7 @@
 <?php
 /**
  * Name: 基本验证器.
- * Author: 七月
+ * User: 七月
  * Date: 2017/4/18
  * Time: 5:15
  */

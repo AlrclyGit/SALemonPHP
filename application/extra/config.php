@@ -1,6 +1,6 @@
 <?php
 /**
- * 配置文件
+ * Name: 配置文件
  * User: 萧俊介
  * Date: 2018/2/6
  * Time: 11:13
@@ -18,12 +18,17 @@ return [
     'base64_image_path' => 'base64Image' . DS,     // 图片Base64保存地址
 
     // 项目名称配置
-    'project_english_name' => 'summer',     // 项目英文名
-    'project_china_name' => '彩色夏天',      // 项目中文名
+    'project_english_name' => '',    // 项目英文名
+    'project_china_name' => '',      // 项目中文名
 
     // Tool
-    'autograph_secret' => '',           // 签名工具类使用的secret
-    'face_app_key' => '',               // 人脸融合类使用的app_key
-    'face_app_id' => '',                // 人脸融合类使用的app_id
+    'autograph_secret' => '',        // 签名工具类使用的Secret
+
+    'face_app_key' => '',            // 人脸融合类使用的app_key
+    'face_app_id' => '',             // 人脸融合类使用的app_id
+
+    'message_key' => '',            // 消息的AppKey
+    'message_tpl_id' => '',         // 短信模板ID
+    'message_tpl_value' => ''       // 短信模板变量
 
 ];

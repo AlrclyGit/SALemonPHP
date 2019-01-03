@@ -1,6 +1,6 @@
 <?php
 /**
- * name: 发放红包工具
+ * Name: 发放红包工具
  * User: 萧俊介
  * Date: 2018/12/3
  * Time: 12:01 PM
@@ -127,12 +127,12 @@ class BonusTool extends BaseTool
             $lotteryError->save($data);
             if ($bonus['err_code'] == 'NOTENOUGH') {
                 return [
-                    'code' => 2,
+                    'code' => 1,
                     'data' => '账户余额不足'
                 ];
             } else {
                 throw new ToolException([
-                    'code' => 203001,
+                    'code' => 2,
                     'data' => [
                         'return_code' => $bonus['err_code'],     // 返回状态码
                         'return_msg' => $bonus['return_msg'],    // 消返回信息

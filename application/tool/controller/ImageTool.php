@@ -15,11 +15,11 @@ class ImageTool extends BaseTool
 {
 
     /*
-       * 接收普通图片
-       * @image 接收的参数名,默认为image
-       * @path 图片的保存地址，项目文件夹为根目录，为空时使用config.file_image_path的配置（非必选）
-       * @return 0成功 并返回图片ID和Url 1失败
-       */
+     * 接收普通图片
+     * @image 接收的参数名,默认为image
+     * @path 图片的保存地址，项目文件夹为根目录，为空时使用config.file_image_path的配置（非必选）
+     * @return 0成功 并返回图片ID和Url 1失败
+     */
     public function setFileImage($image = 'image', $path = null)
     {
         // 获取表单上传文件

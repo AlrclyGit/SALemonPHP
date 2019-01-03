@@ -10,7 +10,6 @@ namespace app\tool\controller;
 
 
 use app\tool\exception\ServerException;
-use app\tool\exception\ToolException;
 use app\tool\model\Access;
 use think\Request;
 
@@ -101,7 +100,7 @@ class JsSdkTool extends BaseTool
         $data = json_decode(saRequestGet($url),true);
         $flag = array_key_exists('errcode', $data);
         if ($flag) {
-            throw new ToolException([
+            throw new ServerException([
                 'code' => 102001,
                 'msg' => '微信觉得你的OpenID有问题'
             ]);

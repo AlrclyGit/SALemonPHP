@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -8,6 +9,8 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
+$projectEnglishName = config('config.project_english_name');    // 项目英文名
 
 return [
     // +----------------------------------------------------------------------
@@ -191,7 +194,7 @@ return [
         // 缓存保存目录
         'path' => CACHE_PATH,
         // 缓存前缀
-        'prefix' => '',
+        'prefix' => $projectEnglishName,
         // 缓存有效期 0表示永久缓存
         'expire' => 0,
         // redis 主机
@@ -211,7 +214,7 @@ return [
         // SESSION_ID的提交变量,解决flash上传跨域
         'var_session_id' => '',
         // SESSION 前缀
-        'prefix' => '',
+        'prefix' => $projectEnglishName,
         // 驱动方式 支持redis memcache memcached
         'type' => 'redis',
         // 是否自动开启 SESSION

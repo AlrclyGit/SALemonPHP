@@ -147,12 +147,12 @@ class JsSdkTool extends BaseTool
                 $api = json_decode($apiUrl, true);
                 if ($jsApi['errcode'] == 0 && $api['errcode'] == 0) {
                     $accessData = [
-                        'app_id' => $this->appId,
-                        'access_token' => $token['access_token'],
-                        'js_api_ticket' => $jsApi['ticket'],
-                        'api_ticket' => $api['ticket'],
-                        'valid_time' => time(),
-                        'expires_in' => $token['expires_in']
+                        'app_id' => $this->appId, // 微信App_id
+                        'access_token' => $token['access_token'], // access_token凭证
+                        'js_api_ticket' => $jsApi['ticket'], // 卡券api_ticket
+                        'api_ticket' => $api['ticket'], // 微信api_ticket
+                        'valid_time' => time(), // 当前时间
+                        'expires_in' => $token['expires_in'] // 有效时间
                     ];
                     if ($accessDb) {
                         $accessM->save($accessData, ['app_id' => $this->appId]);

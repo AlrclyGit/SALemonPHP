@@ -30,17 +30,16 @@ function saRequestGet($url)
 }
 
 /**
- * POST方式请求的CURL
+ * POST方式的CURL请求
  */
 function saRequestPost($url, $data)
 {
     // 初始化
     $ch = curl_init(); // 创建一个CURL资源
     // 设置变量
-    curl_setopt($ch, CURLOPT_URL, $url);                    // 要访问的地址
-    curl_setopt($ch, CURLOPT_POST, 1);                // 发送一个常规的POST请求
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);            // POST提交的数据包
-    // 执行并获取结果
+    curl_setopt($ch, CURLOPT_URL, $url); // 要访问的地址
+    curl_setopt($ch, CURLOPT_POST, 1); // 发送一个常规的POST请求
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     $tmpInfo = curl_exec($ch);
     // 释放CURL
     curl_close($ch);
@@ -49,18 +48,30 @@ function saRequestPost($url, $data)
 }
 
 /**
- * xml转数组
+ * XML转数组
  */
 function saXmlToArray($xml)
 {
-    libxml_disable_entity_loader(true);  //禁止引用外部xml实体
+    // 转成urlEncode
+    $xml = urlencode($xml);
+    // 替换掉'%EF%BB%BF'，这个神奇的BOM
+    $xml = str_replace('%EF%BB%BF', '', $xml);
+    // 转成XML字符串
+    $xml = urldecode($xml);
+    // 替换掉所有的控制字符
+    $xml = preg_replace('/[\x00-\x1F]|\x7F/', '', $xml);
+    // 禁止引用外部XML实体
+    libxml_disable_entity_loader(true);
+    // 转成XML
     $xmlString = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
+    // 转数组
     $array = json_decode(json_encode($xmlString), true);
+    // 返回
     return $array;
 }
 
 /**
- * 生成N位的随机字符串
+ * 生成N位的随机字符串，默认16位
  */
 function saRandomString($length = 16)
 {
@@ -72,9 +83,8 @@ function saRandomString($length = 16)
     return $str;
 }
 
-
 /**
- * 将参数组装成json数据
+ * 将参数组装成JSON数据
  */
 function saReturn($code, $msg, $data = NULL)
 {

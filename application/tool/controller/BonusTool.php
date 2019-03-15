@@ -31,8 +31,8 @@ class BonusTool extends BaseTool
         $obj['total_amount'] = $totalAmount; // 付款金额
         $obj['total_num'] = Config("bonus.total_num"); // 红包发放总人数
         $obj['scene_id'] = Config("bonus.scene_id");
-        $obj['send_name'] = Config("bonus.total_num"); // 商户名称
-        $obj['wishing'] = Config("bonus.send_name"); // 红包祝福语
+        $obj['send_name'] = Config("bonus.send_name"); // 商户名称
+        $obj['wishing'] = Config("bonus.wishing"); // 红包祝福语
         $obj['act_name'] = Config("bonus.act_name"); // 活动名称
         $obj['remark'] = Config("bonus.remark"); //备注
         return $obj;

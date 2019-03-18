@@ -1,12 +1,14 @@
 <?php
 /**
- * Name: 工具模块基本控制器.
+ * name: 基本工具类
  * User: 萧俊介
- * Date: 2018/5/28
- * Time: 18:04
+ * Date: 2019/3/15
+ * Time: 4:45 PM
+ * Created by LemonPHP制作委员会.
  */
 
 namespace app\tool\controller;
+
 
 use think\Controller;
 

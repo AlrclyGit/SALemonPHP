@@ -39,7 +39,8 @@ function saRequestPost($url, $data)
     // 设置变量
     curl_setopt($ch, CURLOPT_URL, $url); // 要访问的地址
     curl_setopt($ch, CURLOPT_POST, 1); // 发送一个常规的POST请求
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // 设置Post参数
+    // 执行并获取结果
     $tmpInfo = curl_exec($ch);
     // 释放CURL
     curl_close($ch);
@@ -94,5 +95,3 @@ function saReturn($code, $msg, $data = NULL)
         'data' => $data
     ]);
 }
-
-

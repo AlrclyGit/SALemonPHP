@@ -1,9 +1,9 @@
 <?php
 /**
- * name: Tool的模型基本类
+ * name: 基本工具模型
  * User: 萧俊介
- * Date: 2018/12/3
- * Time: 11:20 AM
+ * Date: 2019/3/15
+ * Time: 4:59 PM
  * Created by LemonPHP制作委员会.
  */
 

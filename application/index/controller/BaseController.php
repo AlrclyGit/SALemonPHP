@@ -1,9 +1,9 @@
 <?php
 /**
- * Name: 基本控制器
+ * name: 基本控制器
  * User: 萧俊介
- * Date: 2018/1/25
- * Time: 18:30
+ * Date: 2019/3/15
+ * Time: 4:37 PM
  * Created by LemonPHP制作委员会.
  */
 
@@ -18,8 +18,8 @@ class BaseController extends Controller
 {
 
     /*
-     * 构造函数
-     */
+ * 构造函数
+ */
     public function __construct()
     {
         parent::__construct();

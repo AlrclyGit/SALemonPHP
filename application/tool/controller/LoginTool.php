@@ -9,7 +9,7 @@
 namespace app\tool\controller;
 
 
-use app\tool\exception\ServerException;
+use app\tool\exception\ToolException;
 use app\tool\model\UserInfo;
 
 
@@ -18,8 +18,9 @@ class LoginTool extends BaseTool
 
     // 声明变量
     private $appId;
-    private $secret;
+    private $appSecret;
     private $isOnlyOpenId;
+    private $https;
 
     /*
      * 构造函数
@@ -27,9 +28,10 @@ class LoginTool extends BaseTool
     public function __construct()
     {
         parent::__construct();
-        $this->appId = Config("config.appId");
-        $this->secret = Config("config.secret");
-        $this->isOnlyOpenId = Config("config.isOnlyOpenId");
+        $this->appId = config("config.app_id");
+        $this->appSecret = config("config.app_secret");
+        $this->isOnlyOpenId = config("config.is_only_open_id");
+        $this->https = config("config.https");
     }
 
 
@@ -49,11 +51,12 @@ class LoginTool extends BaseTool
                 return null;
             } elseif ($userInfo['code'] == 1) {
                 // 静默授权
-                $this->upUserOpenInfo($userInfo['data']);
+                $this->processOpenId($userInfo['data']);
                 return null;
             } else {
-                $this->redirect('index/index/index');
-                return null;
+                throw new ToolException([
+                    'mgs' => '获取用户信息并写入数据库,出现了一个不可能的错误'
+                ]);
             }
         }
     }
@@ -61,17 +64,14 @@ class LoginTool extends BaseTool
     /*
      * 重定向获取微信用户code
      */
-    public function getCode()
+    private function getCode()
     {
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?";
         $url .= "appid={$this->appId}";
-        $url .= '&redirect_uri=' . urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        $http = $this->https ? 'https://' : 'http://';
+        $url .= '&redirect_uri=' . urlencode($http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $url .= '&response_type=code';
-        if ($this->isOnlyOpenId) {
-            $url .= '&scope=snsapi_base';
-        } else {
-            $url .= '&scope=snsapi_userinfo';
-        }
+        $url .= $this->isOnlyOpenId ? '&scope=snsapi_base' : '&scope=snsapi_userinfo';
         $url .= '&state=STATE#wechat_redirect';
         header('location:' . $url);
         exit();
@@ -80,11 +80,12 @@ class LoginTool extends BaseTool
     /*
      *  通过Code获取用户信息
      */
-    public function getUserInfo($code)
+    private function getUserInfo($code)
     {
         // 通过 code 换取网页授权 access_token
-        $accessTokenUrl = saRequestGet("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->secret}&code={$code}&grant_type=authorization_code");
+        $accessTokenUrl = saRequestGet("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->appSecret}&code={$code}&grant_type=authorization_code");
         $accessTokenArr = json_decode($accessTokenUrl, true);
+        // 通过 access_token 换取用户信息
         if (empty($accessTokenArr['errcode'])) {
             // 是否为静默授权
             if ($this->isOnlyOpenId) {
@@ -102,16 +103,14 @@ class LoginTool extends BaseTool
                         'data' => $userInfoArr
                     ];
                 } else {
-                    throw new ServerException([
-                        'code' => 103001,
+                    throw new ToolException([
                         'msg' => '获取用户信息失败'
                     ]);
                 }
             }
         } else {
-            throw new ServerException([
-                'code' => 103002,
-                'msg' => '获取OpenID失败'
+            throw new ToolException([
+                'msg' => '通过Code获取用户信息失败'
             ]);
         }
     }
@@ -119,57 +118,35 @@ class LoginTool extends BaseTool
     /*
     * 将用户信息写入数据库
     */
-    public function processUserInfo($userInfo)
+    private function processUserInfo($userInfo)
     {
-        // 将openID写入session
-        session('open_id', $userInfo['openid']);
-        // 处理用户名称
-        $nickName = $userInfo['nickname'];
-        $nickName = $this->filterEmoji($nickName);
-        $nickName = $nickName ? $nickName : '昵称为空';
-        // 处理用户头像
-        $headImaUrl = $userInfo ['headimgurl'];
-        $headImaUrl = $headImaUrl ? $headImaUrl : 'https://oss.h5gf.com/avatar.jpg';
         // 打包数组
         $userInfoArray = [
-            'nickname' => $nickName, // 昵称
+            'nick_name' => $userInfo['nickname'], // 昵称
             'open_id' => $userInfo ['openid'], // openId
-            'head_img_url' => $headImaUrl, // 头像地址
+            'head_img_url' => $userInfo ['headimgurl'], // 头像地址
             'sex' => $userInfo ['sex'], // 性别
             'province' => $userInfo ['province'], // 用户个人资料填写的省份
             'city' => $userInfo ['city'], // 普通用户个人资料填写的城市
             'country' => $userInfo ['country'] // 国家，如中国为CN
         ];
-        $userInfoM = new UserInfo();
-        $flag = $userInfoM->save($userInfoArray, ['open_id' => $userInfo['openid']]);
-        if (!$flag) {
-            $userInfoM = new UserInfo();
-            $userInfoM->save($userInfoArray);
+        $userInfo = UserInfo::get(['open_id' => $userInfo['openid']]);
+        if ($userInfo) {
+            $userInfo->save($userInfoArray);
+        } else {
+            UserInfo::create($userInfoArray);
         }
     }
 
     /*
      * 将openId写入数据库
      */
-    public function upUserOpenInfo($openId)
+    private function processOpenId($openId)
     {
-        session('open_id', $openId);
-        $userInfoM = new UserInfo();
-        $userInfo = $userInfoM->where('open_id', $openId)->find();
+        $userInfo = UserInfo::get(['open_id' => $openId]);
         if (!$userInfo) {
-            $userInfoM->save(['open_id' => $openId]);
+            UserInfo::create(['open_id' => $openId]);
         }
     }
-
-    /*
-    * 过滤Emoji表情
-    */
-    private function filterEmoji($nickname)
-    {
-        $pattern = '/([0-9|#][\x{20E3}])|[\x{00ae}|\x{00a9}|\x{203C}|\x{2047}|\x{2048}|\x{2049}|\x{3030}|\x{303D}|\x{2139}|\x{2122}|\x{3297}|\x{3299}][\x{FE00}-\x{FEFF}]?|[\x{2190}-\x{21FF}][\x{FE00}-\x{FEFF}]?|[\x{2300}-\x{23FF}][\x{FE00}-\x{FEFF}]?|[\x{2460}-\x{24FF}][\x{FE00}-\x{FEFF}]?|[\x{25A0}-\x{25FF}][\x{FE00}-\x{FEFF}]?|[\x{2600}-\x{27BF}][\x{FE00}-\x{FEFF}]?|[\x{2600}-\x{27BF}][\x{1F000}-\x{1FEFF}]?|[\x{2900}-\x{297F}][\x{FE00}-\x{FEFF}]?|[\x{2B00}-\x{2BF0}][\x{FE00}-\x{FEFF}]?|[\x{1F000}-\x{1F9FF}][\x{FE00}-\x{FEFF}]?|[\x{1F000}-\x{1F9FF}][\x{1F000}-\x{1FEFF}]?/u';
-        $filter_str = preg_replace($pattern, "", $nickname);
-        return $filter_str;
-    }
-
 
 }

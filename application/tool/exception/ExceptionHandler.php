@@ -12,6 +12,7 @@ namespace app\tool\exception;
 
 use think\exception\Handle;
 use think\Log;
+use Exception;
 
 class ExceptionHandler extends Handle
 {
@@ -22,7 +23,7 @@ class ExceptionHandler extends Handle
     private $data = null;
 
     // 重写框架的全局异常处理方法
-    public function render(\Exception $e)
+    public function render(Exception $e)
     {
         if ($e instanceof BaseException) { // 自定义的异常
             $this->code = $e->code;
@@ -49,7 +50,7 @@ class ExceptionHandler extends Handle
     /*
      * 异常写入日志
      */
-    private function recordErrorLog(\Exception $e)
+    private function recordErrorLog(Exception $e)
     {
         Log::init([
             'type' => 'File',

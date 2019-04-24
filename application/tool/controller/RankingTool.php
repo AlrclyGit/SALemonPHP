@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Name: 排行榜工具类
+ * User: 萧俊介
+ * Date: 2018/7/10
+ * Time: 下午4:08
+ */
 
 namespace app\tool\controller;
 
@@ -9,6 +14,7 @@ use app\tool\model\UserInfo;
 
 class RankingTool extends BaseTool
 {
+
     /*
      * 写入一个排行
      */
@@ -35,7 +41,6 @@ class RankingTool extends BaseTool
             return saReturn(0, '添加成功', $newGrade);
         }
     }
-
 
     /*
      * 查询排行

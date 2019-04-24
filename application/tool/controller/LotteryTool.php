@@ -9,8 +9,8 @@
 namespace app\tool\controller;
 
 
-use app\index\model\Lottery;
-use app\index\model\Prize;
+use app\tool\model\Lottery;
+use app\tool\model\Prize;
 
 class LotteryTool extends BaseTool
 {

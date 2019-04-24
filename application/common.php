@@ -12,14 +12,19 @@
 // 应用公共文件
 
 /**
- * Get方式的CURL请求
+ * CURL请求
  */
-function saRequestGet($url)
+function saRequest($url, $data = '')
 {
     // 初始化
     $ch = curl_init(); // 创建一个CURL资源
     // 设置变量
     curl_setopt($ch, CURLOPT_URL, $url); // 设置URL
+    // 是否有参数
+    if (!empty($url)) {
+        curl_setopt($ch, CURLOPT_POST, 1); // 发送一个常规的POST请求
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // 设置Post参数
+    }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); //不输出获取的结果
     // 执行并获取结果
     $output = curl_exec($ch);
@@ -27,25 +32,6 @@ function saRequestGet($url)
     curl_close($ch);
     // 返回结果
     return $output;
-}
-
-/**
- * POST方式的CURL请求
- */
-function saRequestPost($url, $data)
-{
-    // 初始化
-    $ch = curl_init(); // 创建一个CURL资源
-    // 设置变量
-    curl_setopt($ch, CURLOPT_URL, $url); // 要访问的地址
-    curl_setopt($ch, CURLOPT_POST, 1); // 发送一个常规的POST请求
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // 设置Post参数
-    // 执行并获取结果
-    $tmpInfo = curl_exec($ch);
-    // 释放CURL
-    curl_close($ch);
-    // 返回结果
-    return $tmpInfo;
 }
 
 /**
@@ -87,9 +73,9 @@ function saRandomString($length = 16)
 /**
  * 将参数组装成JSON数据
  */
-function saReturn($code, $msg, $data = NULL)
+function saReturn($code, $msg, $data = null)
 {
-    return json([
+    return json_encode([
         'code' => $code,
         'msg' => $msg,
         'data' => $data

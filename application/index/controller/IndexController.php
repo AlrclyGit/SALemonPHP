@@ -14,8 +14,7 @@ class IndexController extends BaseController
 
     public function index()
     {
-        return '谢谢帮助';
+        return $this->fetch();
     }
-
 
 }

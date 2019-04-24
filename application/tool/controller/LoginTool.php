@@ -20,7 +20,7 @@ class LoginTool extends BaseTool
     private $appId;
     private $appSecret;
     private $isOnlyOpenId;
-    private $https;
+    private $isHttps;
 
     /*
      * 构造函数
@@ -31,7 +31,7 @@ class LoginTool extends BaseTool
         $this->appId = config("config.app_id");
         $this->appSecret = config("config.app_secret");
         $this->isOnlyOpenId = config("config.is_only_open_id");
-        $this->https = config("config.https");
+        $this->isHttps = config("config.isHttps");
     }
 
 
@@ -68,7 +68,7 @@ class LoginTool extends BaseTool
     {
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?";
         $url .= "appid={$this->appId}";
-        $http = $this->https ? 'https://' : 'http://';
+        $http = $this->isHttps ? 'https://' : 'http://';
         $url .= '&redirect_uri=' . urlencode($http . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $url .= '&response_type=code';
         $url .= $this->isOnlyOpenId ? '&scope=snsapi_base' : '&scope=snsapi_userinfo';
@@ -83,7 +83,7 @@ class LoginTool extends BaseTool
     private function getUserInfo($code)
     {
         // 通过 code 换取网页授权 access_token
-        $accessTokenUrl = saRequestGet("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->appSecret}&code={$code}&grant_type=authorization_code");
+        $accessTokenUrl = saRequest("https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->appId}&secret={$this->appSecret}&code={$code}&grant_type=authorization_code");
         $accessTokenArr = json_decode($accessTokenUrl, true);
         // 通过 access_token 换取用户信息
         if (empty($accessTokenArr['errcode'])) {
@@ -122,19 +122,21 @@ class LoginTool extends BaseTool
     {
         // 打包数组
         $userInfoArray = [
-            'nick_name' => $userInfo['nickname'], // 昵称
             'open_id' => $userInfo ['openid'], // openId
+            'nick_name' => $userInfo['nickname'], // 昵称
             'head_img_url' => $userInfo ['headimgurl'], // 头像地址
             'sex' => $userInfo ['sex'], // 性别
             'province' => $userInfo ['province'], // 用户个人资料填写的省份
             'city' => $userInfo ['city'], // 普通用户个人资料填写的城市
             'country' => $userInfo ['country'] // 国家，如中国为CN
         ];
-        $userInfo = UserInfo::get(['open_id' => $userInfo['openid']]);
+        $userInfo = UserInfo::get($userInfo['openid']);
         if ($userInfo) {
             $userInfo->save($userInfoArray);
+            session('open_id', $userInfo ['open_id']);
         } else {
-            UserInfo::create($userInfoArray);
+            $userInfo = UserInfo::create($userInfoArray);
+            session('open_id', $userInfo ['open_id']);
         }
     }
 
@@ -143,10 +145,11 @@ class LoginTool extends BaseTool
      */
     private function processOpenId($openId)
     {
-        $userInfo = UserInfo::get(['open_id' => $openId]);
+        $userInfo = UserInfo::get($openId);
         if (!$userInfo) {
             UserInfo::create(['open_id' => $openId]);
         }
+        session('open_id', $openId);
     }
 
 }

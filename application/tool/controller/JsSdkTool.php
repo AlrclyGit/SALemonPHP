@@ -137,7 +137,7 @@ class JsSdkTool extends BaseTool
             return $accessDb;
         } else {
             // code换取access_token
-            $tokenUrl = saRequest("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->secret}");
+            $tokenUrl = saRequest("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$this->appId}&secret={$this->appSecret}");
             $token = json_decode($tokenUrl, true);
             //
             if (isset($token['access_token'])) {

@@ -9,6 +9,9 @@
 
 namespace app\index\controller;
 
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Methods:POST');
+header('Access-Control-Allow-Headers:x-requested-with,content-type');
 
 use app\tool\controller\LoginTool;
 use app\tool\model\UserInfo;

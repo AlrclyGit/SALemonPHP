@@ -1,6 +1,6 @@
 <?php
 /**
- * name: 奖品模型
+ * name: 中奖记录模型
  * User: 萧俊介
  * Date: 2019/4/2
  * Time: 5:53 PM

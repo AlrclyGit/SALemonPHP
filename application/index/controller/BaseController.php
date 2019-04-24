@@ -17,16 +17,15 @@ use think\Controller;
 class BaseController extends Controller
 {
 
-    /*
- * 构造函数
- */
+    /**
+     * 构造函数
+     */
     public function __construct()
     {
         parent::__construct();
         // 判断用户权限
         if (session('open_id')) {
-            $userInfoM = new UserInfo();
-            $userInfo = $userInfoM->where('open_id', session('open_id'))->find();
+            $userInfo = UserInfo::where('open_id', session('open_id'))->find();
             if (!$userInfo) {
                 (new LoginTool())->getWeChatUserInfo();
             }

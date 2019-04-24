@@ -130,7 +130,7 @@ class LoginTool extends BaseTool
             'city' => $userInfo ['city'], // 普通用户个人资料填写的城市
             'country' => $userInfo ['country'] // 国家，如中国为CN
         ];
-        $userInfo = UserInfo::get($userInfo['openid']);
+        $userInfo = UserInfo::where('openid', $userInfo['openid'])->find();
         if ($userInfo) {
             $userInfo->save($userInfoArray);
             session('open_id', $userInfo ['open_id']);
@@ -145,7 +145,7 @@ class LoginTool extends BaseTool
      */
     private function processOpenId($openId)
     {
-        $userInfo = UserInfo::get($openId);
+        $userInfo = UserInfo::where('openid', $openId)->find();
         if (!$userInfo) {
             UserInfo::create(['open_id' => $openId]);
         }

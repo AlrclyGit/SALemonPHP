@@ -9,9 +9,13 @@
 
 namespace app\index\controller;
 
+
 class IndexController extends BaseController
 {
 
+    /**
+     * 入口方法
+     */
     public function index()
     {
         return $this->fetch();

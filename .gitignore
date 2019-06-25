@@ -1,4 +1,5 @@
 /application/extra/
 /application/cert/
+/application/tool2/
 /application/*.php
 /.idea

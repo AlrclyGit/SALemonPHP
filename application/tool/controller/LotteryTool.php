@@ -72,7 +72,7 @@ class LotteryTool extends BaseTool
                 'name' => $prize['name'],
                 'key' => $code
             ];
-            return saReturn(0, '线下实物', $returnData);
+            return saReturn(1, '线下实物', $returnData);
         } elseif ($prize['type'] == 2) { // 红包
             Prize::where('id', $prizeId)->setDec('number');
             $bonusT = new BonusTool();
@@ -90,7 +90,7 @@ class LotteryTool extends BaseTool
                 'name' => $prize['name'],
                 'money' => $money
             ];
-            return saReturn(0, '红包', $returnData);
+            return saReturn(2, '红包', $returnData);
         } else {
             return saReturn(0, '抽奖出错了！');
         }

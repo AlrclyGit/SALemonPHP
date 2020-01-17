@@ -6,9 +6,9 @@
  * Time: 10:15
  */
 
-namespace app\tool\server;
+namespace app\tool\controller;
 
-use app\tool\controller\BaseTool;
+
 use app\tool\model\UserInfo;
 
 class UserInfoTool extends BaseTool
@@ -17,7 +17,7 @@ class UserInfoTool extends BaseTool
     /*
      * 用OpenId获取用户ID
      */
-    function retrieveUIdByOpenId($openId)
+    static public function retrieveUIdByOpenId($openId)
     {
         return UserInfo::where('open_id', $openId)->value('id');
     }
@@ -25,9 +25,9 @@ class UserInfoTool extends BaseTool
     /*
      * 用户ID获取OpenId
      */
-    function retrieveOpenIdByUId($Id)
+    static function retrieveOpenIdByUId($uID)
     {
-        return UserInfo::where('id', $Id)->value('open_id');
+        return UserInfo::where('id', $uID)->value('open_id');
     }
 
 }

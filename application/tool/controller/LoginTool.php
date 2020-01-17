@@ -110,7 +110,8 @@ class LoginTool extends BaseTool
             }
         } else {
             throw new ToolException([
-                'msg' => '通过Code获取用户信息失败'
+                'msg' => '通过Code获取用户信息失败',
+                'data' => $accessTokenUrl
             ]);
         }
     }
@@ -130,7 +131,7 @@ class LoginTool extends BaseTool
             'city' => $userInfo ['city'], // 普通用户个人资料填写的城市
             'country' => $userInfo ['country'] // 国家，如中国为CN
         ];
-        $userInfo = UserInfo::where('openid', $userInfo['openid'])->find();
+        $userInfo = UserInfo::where('open_id', $userInfo['openid'])->find();
         if ($userInfo) {
             $userInfo->save($userInfoArray);
             session('open_id', $userInfo ['open_id']);

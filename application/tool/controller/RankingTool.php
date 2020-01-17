@@ -22,6 +22,10 @@ class RankingTool extends BaseTool
     {
         // 获取新分数
         $newGrade = input('post.grade');
+        //
+        if (empty($newGrade)) {
+            return saReturn(2, '分数不能为空');
+        }
         // 获取旧分数
         $ranking = Ranking::where('open_id', session('open_id'))->find();
         // 判断
@@ -45,25 +49,27 @@ class RankingTool extends BaseTool
     /*
      * 查询排行
      */
-    public static function getRanking($limit = 200, $cache = 15)
+    public static function getRanking($limit = 200, $cache = 5)
     {
         // 世界排行
         $lottery = Ranking::join('user_info', 'ranking.open_id = user_info.open_id')
-            ->field('nick_name,head_img_url,grade')
+            ->field('user_info.open_id,nick_name,head_img_url,grade')
             ->order(['grade desc'])
             ->limit($limit)
             ->cache($cache)
             ->select();
+        // 个人信息
+        $userInfo = UserInfo::where('open_id', session('open_id'))->find();
         // 个人排行
         $order = 0;
         for ($i = 0; $i < count($lottery); $i++) {
             if ($lottery[$i]['open_id'] == session('open_id')) {
                 $order = $i + 1;
-                $grade = $lottery[$i]['grade'];
             }
+            unset($lottery[$i]['open_id']);
         }
-        // 个人信息
-        $userInfo = UserInfo::where('open_id', session('open_id'))->find();
+        // 个人分数
+        $grade = Ranking::where('open_id', session('open_id'))->value('grade');
         // 返回数组;
         $data = [
             $lottery,
